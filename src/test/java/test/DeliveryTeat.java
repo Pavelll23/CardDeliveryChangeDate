@@ -2,8 +2,6 @@ package test;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.conditions.ExactText;
-import com.github.javafaker.Faker;
 import data.DataGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,16 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
-import java.util.Locale;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-class DeliveryTest {
+class DeliveryTeat {
 
     @BeforeEach
     void setup() {
-        Faker faker = new Faker(new Locale("ru"));
+
         open("http://localhost:9999");
     }
 
@@ -41,10 +38,10 @@ class DeliveryTest {
         $("[data-test-id=phone] input").setValue(validUser.getPhone());
         $("[data-test-id='agreement']").click();
         $x("//span[@class='button__content']//parent::button").click();
-       // $(byText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15));
-             //   .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + firstMeetingDate))
-                //        .shouldBe(Condition.visible);
+        $(byText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $("[data-test-id='success-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.text("Успешно! Встреча успешно запланирована на " + firstMeetingDate))
+                       .shouldBe(Condition.visible);
         $("[data-test-id=date]").click();
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
         $("[data-test-id=date] input").setValue(secondMeetingDate);
@@ -52,8 +49,8 @@ class DeliveryTest {
         $("[data-test-id='replan-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
         $(byText("Перепланировать")).click();
-        $("[data-test-id=success-notification]").shouldBe(Condition.visible, Duration.ofSeconds(15));
-            //    .shouldHave(Condition.exactText("Встреча успешно забронирована на " + secondMeetingDate));
+        $("[data-test-id=success-notification]").shouldBe(Condition.visible, Duration.ofSeconds(15))
+        .shouldHave(Condition.exactText("Успешно! Встреча успешно запланирована на " + secondMeetingDate));
 
 
     }
